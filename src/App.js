@@ -1,23 +1,30 @@
-// 引入必要的内置组件
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Layout } from './components/layout';
-import { Login } from './components/login';
-import { NotFound } from './components/notFound';
+// 导入路由
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { AuthRoute } from '@/components'
+// 导入页面组件
+import Login from './pages/Login'
+import Layout from './pages/Layout'
 
+// 配置路由规则
 function App() {
     return (
-        <div className="App">
-            {/* 按照规则配置路由 */}
-            <BrowserRouter>
+        <BrowserRouter>
+            <div className="App">
                 <Routes>
-                    <Route index element={<Layout />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="*" element={<NotFound />} />
-                    { /* 省略部分  */}
+                    {/* 需要鉴权的路由 */}
+                    <Route path="/*" element={
+                        <AuthRoute>
+                            <Layout />
+                        </AuthRoute>
+                    } />
+                    {/* 不需要鉴权的路由 */}
+                    <Route path='/login' element={<Login />} />
                 </Routes>
-            </BrowserRouter>
-        </div>
+            </div>
+        </BrowserRouter>
     )
 }
 
 export default App
+
+
